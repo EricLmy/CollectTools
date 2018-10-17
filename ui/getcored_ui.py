@@ -7,9 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import matplotlib.pyplot as plt 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas 
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -34,18 +32,9 @@ class Ui_Form(object):
         self.gridLayout_2.setContentsMargins(2, 2, 2, 2)
         self.gridLayout_2.setSpacing(1)
         self.gridLayout_2.setObjectName("gridLayout_2")
-
-        self.figure_video, self.figaxes_video = plt.subplots()
-        self.figure_video.subplots_adjust(left=0.01,top=0.99, right=0.98, bottom=0.01)
-        self.canvas_video = FigureCanvas(self.figure_video)
-        # self.toolbar_video = NavigationToolbar(self.canvas_video, self.tab)
-        # self.toolbar_video.setMinimumSize(QtCore.QSize(0, 41))
-        # self.toolbar_video.setMaximumSize(QtCore.QSize(16777215, 41))
-
-        # self.widget_2 = QtWidgets.QWidget(self.frame)
-        # self.widget_2.setObjectName("widget_2")
-        self.gridLayout_2.addWidget(self.canvas_video, 0, 1, 1, 1)
-
+        self.widget_2 = QtWidgets.QWidget(self.frame)
+        self.widget_2.setObjectName("widget_2")
+        self.gridLayout_2.addWidget(self.widget_2, 0, 1, 1, 1)
         self.gridLayout_3.addWidget(self.frame, 0, 0, 1, 1)
         self.frame_2 = QtWidgets.QFrame(self.tab)
         self.frame_2.setMinimumSize(QtCore.QSize(211, 0))
@@ -308,15 +297,9 @@ class Ui_Form(object):
         self.gridLayout_6.setContentsMargins(2, 2, 2, 2)
         self.gridLayout_6.setSpacing(1)
         self.gridLayout_6.setObjectName("gridLayout_6")
-
-        self.figure_face, self.figaxes_face = plt.subplots()
-        # self.figure_face.subplots_adjust(left=0.01,top=0.99, right=0.98, bottom=0.01)
-        self.canvas_face = FigureCanvas(self.figure_face)
-        # self.toolbar_face = NavigationToolbar(self.canvas_face, self.tab)
-        # self.toolbar_face.setMinimumSize(QtCore.QSize(0, 41))
-        # self.toolbar_face.setMaximumSize(QtCore.QSize(16777215, 41))
-        self.gridLayout_6.addWidget(self.canvas_face, 0, 0, 1, 1)
-
+        self.widget1 = QtWidgets.QWidget(self.frame_5)
+        self.widget1.setObjectName("widget1")
+        self.gridLayout_6.addWidget(self.widget1, 0, 0, 1, 1)
         self.openBtn = QtWidgets.QPushButton(self.frame_4)
         self.openBtn.setGeometry(QtCore.QRect(10, 10, 71, 26))
         self.openBtn.setMinimumSize(QtCore.QSize(71, 26))
@@ -405,24 +388,14 @@ class Ui_Form(object):
         self.frame_3.setObjectName("frame_3")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.frame_3)
         self.gridLayout_5.setObjectName("gridLayout_5")
-
-
-        self.figure_pic, self.figaxes_pic = plt.subplots()
-        # self.figure_pic.subplots_adjust(left=0.01,top=0.99, right=0.98, bottom=0.01)
-        self.canvas_pic = FigureCanvas(self.figure_pic)
-        self.toolbar_pic = NavigationToolbar(self.canvas_pic, self.tab)
-        self.toolbar_pic.setMinimumSize(QtCore.QSize(0, 41))
-        self.toolbar_pic.setMaximumSize(QtCore.QSize(16777215, 41))
-        self.gridLayout_5.addWidget(self.toolbar_pic, 0, 0, 1, 1)
-        self.gridLayout_5.addWidget(self.canvas_pic, 1, 0, 1, 1)
-
-        # self.widget_3 = QtWidgets.QWidget(self.frame_3)
-        # self.widget_3.setMinimumSize(QtCore.QSize(0, 41))
-        # self.widget_3.setMaximumSize(QtCore.QSize(16777215, 41))
-        # self.widget_3.setObjectName("widget_3")
-        # self.widget_4 = QtWidgets.QWidget(self.frame_3)
-        # self.widget_4.setObjectName("widget_4")
-
+        self.widget_3 = QtWidgets.QWidget(self.frame_3)
+        self.widget_3.setMinimumSize(QtCore.QSize(0, 41))
+        self.widget_3.setMaximumSize(QtCore.QSize(16777215, 41))
+        self.widget_3.setObjectName("widget_3")
+        self.gridLayout_5.addWidget(self.widget_3, 0, 0, 1, 1)
+        self.widget_4 = QtWidgets.QWidget(self.frame_3)
+        self.widget_4.setObjectName("widget_4")
+        self.gridLayout_5.addWidget(self.widget_4, 1, 0, 1, 1)
         self.gridLayout_4.addWidget(self.frame_3, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab_2, "")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)

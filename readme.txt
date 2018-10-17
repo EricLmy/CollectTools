@@ -8,6 +8,10 @@ ubuntu18.04  + python3.6
 3. pip3 install opencv-contrib-python 
 # 安装完opencv-contrib-python的时候，打不开摄像头，将虚拟机的USB设置成3.0的即可
 
+4.1 sudo apt-get install cmake 
+4.2 sudo apt-get install libboost-python-dev
+	4.2.1 dlib需要源码安装速度会快一些
+4.3 pip3 install face_recognition 
 
 pyQt5:
 sudo apt-get install python3-pyqt5
