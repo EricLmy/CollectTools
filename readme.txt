@@ -12,6 +12,7 @@ ubuntu18.04  + python3.6
 4.2 sudo apt-get install libboost-python-dev
 	4.2.1 dlib需要源码安装速度会快一些
 4.3 pip3 install face_recognition 
+	4.3.1 sudo apt install python3-sklearn
 
 pyQt5:
 sudo apt-get install python3-pyqt5

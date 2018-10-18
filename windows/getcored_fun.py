@@ -13,6 +13,22 @@ import os
 import copy
 from identiffun.get_face import GenerateClass
 
+
+def img_reszie(img, size_w_h):# size_w_h = (width, height),
+    return cv2.resize(img, size_w_h, interpolation=cv2.INTER_CUBIC)
+
+def img_rotate(img, center, angle, size_w_h):
+    M = cv2.getRotationMatrix2D(center, angle, 1)
+    return cv2.warpAffine(img, M, size_w_h)
+
+# flipCode – 翻转模式，
+# flipCode==0垂直翻转（沿X轴翻转），
+# flipCode>0水平翻转（沿Y轴翻转），
+# flipCode<0水平垂直翻转（先沿X轴翻转，再沿Y轴翻转，等价于旋转180°）
+def img_flip(img, flipCode):
+    return cv2.flip(img , flipCode)
+
+
 class getDataWindows(QWidget):
     def __del__(self):
         if hasattr(self, "camera"):
@@ -33,11 +49,58 @@ class getDataWindows(QWidget):
         self.window.capBtn.clicked.connect(self.catch_picture)
         self.window.saveBtn.clicked.connect(self.saveBtn_fun)
 
+        self.window.openBtn.clicked.connect(self.openBtn_fun)
+        self.window.sfBtn.clicked.connect(self.sfBtn_fun)
+        self.window.xzBtn.clicked.connect(self.xzBtn_fun)
+        self.window.spBtn.clicked.connect(self.spBtn_fun)
+        self.window.czBtn.clicked.connect(self.czBtn_fun)
+
+    def czBtn_fun(self):
+        if hasattr(self, "raw_frame"):
+            self.reszie_img = img_flip(copy.deepcopy(self.raw_frame), 0)
+            self.showimg2picfigaxes(self.reszie_img)
+
+    def spBtn_fun(self):
+        if hasattr(self, "raw_frame"):
+            self.reszie_img = img_flip(copy.deepcopy(self.raw_frame), 1)
+            self.showimg2picfigaxes(self.reszie_img)
+
+    def xzBtn_fun(self):
+        if hasattr(self, "raw_frame"):
+            X = self.window.xz_X_spinBox.value()
+            Y = self.window.xz_Y_spinBox.value()
+            width = self.window.sf_W_spinBox.value()
+            height = self.window.sf_H_spinBox.value()
+            angle = self.window.xz_D_spinBox.value()
+            self.reszie_img = img_rotate(copy.deepcopy(self.raw_frame), (X,Y), angle, (width, height))
+            self.showimg2picfigaxes(self.reszie_img)
+
+    def sfBtn_fun(self):
+        if hasattr(self, "raw_frame"):
+            width = self.window.sf_W_spinBox.value()
+            height = self.window.sf_H_spinBox.value()
+            self.reszie_img = img_reszie(copy.deepcopy(self.raw_frame), (width, height))
+            self.showimg2picfigaxes(self.reszie_img)
+
+    def init_window_info(self):
+        self.window.sf_W_spinBox.setValue(self.raw_frame.shape[1])
+        self.window.sf_H_spinBox.setValue(self.raw_frame.shape[0])
+        self.window.xz_X_spinBox.setValue(self.raw_frame.shape[1]//2)
+        self.window.xz_Y_spinBox.setValue(self.raw_frame.shape[0]//2)
+
+    def openBtn_fun(self):
+        filename, filetype = QFileDialog.getOpenFileName(self, "Open", None, "jpg files(*.jpg);;All Files(*)")
+        if filename:
+            self.raw_frame = cv2.imread(filename)   
+            self.init_window_info()         
+            self.showimg2picfigaxes(self.raw_frame)
+
     def catch_picture(self):
         if hasattr(self, "camera") and self.camera.isOpened():
             ret, frame = self.camera.read()
             if ret:
                 self.raw_frame = copy.deepcopy(frame)
+                self.init_window_info() 
                 self.showimg2picfigaxes(frame)
             else:
                 pass # get faild
@@ -45,7 +108,12 @@ class getDataWindows(QWidget):
     def saveBtn_fun(self):
         filename, filetype = QFileDialog.getSaveFileName(self, "save", "", "jpg Files(*.jpg)::All Files(*)")
         if filename:
-            cv2.imwrite(filename, self.raw_frame)
+            if hasattr(self, "raw_frame"):
+                if hasattr(self, "reszie_img"):
+                    cv2.imwrite(filename, self.reszie_img)
+                else:
+                    cv2.imwrite(filename, self.raw_frame)
+
 
     def set_width_and_height(self):
         width, height = self.window.fbl_comboBox.currentText().split('*')
@@ -59,7 +127,6 @@ class getDataWindows(QWidget):
             self.timer.stop()
         self.window.figaxes_video.clear()
         self.window.figure_video.canvas.draw()
-
 
     def timer_fun(self):
         ret, frame = self.camera.read()
@@ -130,7 +197,6 @@ class getDataWindows(QWidget):
         self.window.figaxes_video.clear()
         self.window.figaxes_video.imshow(imgret)
         self.window.figure_video.canvas.draw()
-
 
     def showimg2picfigaxes(self,img):
         b, g, r = cv2.split(img)
