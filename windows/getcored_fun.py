@@ -11,7 +11,7 @@ else:
 import cv2 
 import os
 import copy
-from identiffun.get_face import GenerateClass
+from identiffun.face_faster import GenerateClass
 
 
 def img_reszie(img, size_w_h):# size_w_h = (width, height),
@@ -54,6 +54,19 @@ class getDataWindows(QWidget):
         self.window.xzBtn.clicked.connect(self.xzBtn_fun)
         self.window.spBtn.clicked.connect(self.spBtn_fun)
         self.window.czBtn.clicked.connect(self.czBtn_fun)
+
+        self.window.face_1_checkBox.clicked.connect(self.face_1_checkBox_fun)
+
+        self.mygener = GenerateClass(".")
+        self.knn_clf = self.mygener.get_knn_clf("./identiffun/trained_knn_model1.clf")
+
+    def face_1_checkBox_fun(self):
+        if self.window.face_1_checkBox.isChecked():
+            if hasattr(self, "raw_frame"):
+                predictions = self.mygener.predict(self.raw_frame, self.knn_clf)
+                self.showimg2picfigaxes(self.mygener.show_prediction_labels_on_image(self.raw_frame, predictions))
+
+
 
     def czBtn_fun(self):
         if hasattr(self, "raw_frame"):
