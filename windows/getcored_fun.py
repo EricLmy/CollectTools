@@ -57,8 +57,17 @@ class getDataWindows(QWidget):
 
         self.window.face_1_checkBox.clicked.connect(self.face_1_checkBox_fun)
 
+        self.window.faceCheckBox.clicked.connect(self.faceCheckBox_fun)
+        self.getface_flag = False
+
         self.mygener = GenerateClass(".")
         self.knn_clf = self.mygener.get_knn_clf("./identiffun/trained_knn_model1.clf")
+
+    def faceCheckBox_fun(self):
+        if self.window.faceCheckBox.isChecked():
+            self.getface_flag = True
+        else:
+            self.getface_flag = False
 
     def face_1_checkBox_fun(self):
         if self.window.face_1_checkBox.isChecked():
@@ -205,7 +214,12 @@ class getDataWindows(QWidget):
             self.window.bhd_SpinBox.setValue(saturation) # inf
 
     def showimg2videofigaxes(self, img):
-        b, g, r = cv2.split(img)
+        if self.getface_flag:
+            predictions = self.mygener.predict(img, self.knn_clf)
+            ret_img = self.mygener.show_prediction_labels_on_image(img, predictions)
+        else:
+            ret_img = img
+        b, g, r = cv2.split(ret_img)
         imgret = cv2.merge([r,g,b])# 这个就是前面说书的，OpenCV和matplotlib显示不一样，需要转换
         self.window.figaxes_video.clear()
         self.window.figaxes_video.imshow(imgret)
