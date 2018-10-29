@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*- 
 # 
 
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QFileDialog, QMessageBox
 from PyQt5.QtCore import QTimer, QSize
 if __name__ == '__main__':
     from getcored_ui import Ui_Form
@@ -62,6 +62,15 @@ class getDataWindows(QWidget):
 
         self.mygener = GenerateClass(".")
         self.knn_clf = self.mygener.get_knn_clf("./identiffun/trained_knn_model1.clf")
+
+        self.window.pushFaceBtn.clicked.connect(self.pushFaceBtn_fun)
+
+    def pushFaceBtn_fun(self):
+        try:
+            # 1. 将相应的图片保存到对应的目录下
+            # 2. 更新clf文件即可
+        except Exception as e:
+            QMessageBox.warning(self, "ERROR", str(e), QMessageBox.Cancel)
 
     def faceCheckBox_fun(self):
         if self.window.faceCheckBox.isChecked():
